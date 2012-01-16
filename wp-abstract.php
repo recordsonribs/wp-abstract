@@ -148,10 +148,9 @@ class wp_abstract_post_type {
 	 * @version 0.1
 	 * @since 0.1
 	 */
-	function flash ($message, $number) {
+	function flash ($message, $number = false) {
 		if (! $number) {
-			$number = $this->message_code;
-			$this->message_code++;
+			$number = count($this->messages) - 1;
 		}
 
 		$this->messages[$number][$message] = $message;
