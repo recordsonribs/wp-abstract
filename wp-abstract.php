@@ -50,8 +50,6 @@ class wp_abstract_post_type {
 		}
 		
 		add_action('init', array ($this, 'init'));
-		
-		add_filter('post_updated_messages', array($this, 'post_updated_messages'));
 	}
 	
 	function init ($overwrite = array()) {
@@ -84,6 +82,8 @@ class wp_abstract_post_type {
 		}
 		
 		register_post_type ($this->name, $args);
+
+		add_filter('post_updated_messages', array($this, 'post_updated_messages'));
 	}
 	
 	function post_updated_messages($messages) {
