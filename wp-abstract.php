@@ -61,7 +61,6 @@ class wp_abstract_post_type {
 			'public' => true,
 			'publicly_queryable' => true,
 			'show_ui' => true,
-			'rewrite' => true,
 			'capability_type' => 'post',
 			'has_archive' => true,
 			'hierarchical' => false,
@@ -71,7 +70,7 @@ class wp_abstract_post_type {
 			'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
 			'register_meta_box_cb' => array($this, 'metaboxes'),
 			'rewrite' => array(
-				'slug' => $this->single,
+				'slug' => strtolower($this->single),
 				'with_front' => false,
 				'feeds' => true,
 				'pages' => true
