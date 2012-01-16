@@ -84,9 +84,7 @@ class wp_abstract_post_type {
 			'show_in_nav_menus' => true,
 		);
 		
-		if ($overwrite) {
-			$args = array_merge($args, $overwrite);
-		}
+		$args = array_merge($args, $overwrite);
 		
 		register_post_type ($this->name, $args);
 
