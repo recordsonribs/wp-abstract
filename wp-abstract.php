@@ -26,9 +26,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 class wp_abstract_post_type {
+	static $namespace = '';
+
 	public $name = '';
 	public $single = '';
 	public $plural = '';
+
+	private $messages = array();
+	private $current_message = '';
+	private $message_code = 99;
 
 	function __construct ($name, $single = false, $plural = false, $complex = false) {
 		if (substr($name, -1) == 's') {
@@ -124,5 +130,53 @@ class wp_abstract_post_type {
 			'not_found_in_trash' => "No $this->plural found in trash",
 			'menu_name' => $this->plural
 		);
+	}
+
+	/**
+	 * Flashes a new message
+	 *
+	 * Modern MVV frameworks have rather spoilt us with their flash menthods.
+	 * We can just use these to display a message, rather than anything else.
+	 * 
+	 * The following is a shortcut method for doing this that is location aware.
+	 *
+	 * $this->flash('You didn't do this right);
+	 *
+	 * Should be all you need to raise when you want to show a message to the user
+	 * after, say, a post update.
+	 *
+	 * @return void
+	 * @author Alex Andrews
+	 * @version 0.1
+	 * @since 0.1
+	 */
+	function flash ($message, $number) {
+		if (! $number) {
+			$number = $this->message_code;
+			$this->message_code++;
+		}
+
+		$this->messages[$number][$message] = $message;
+
+		$this->current_message = $number;
+
+		add_filter('redirect_post_location', array($this, 'redirect_post_location'));
+		add_filter('post_updated_messages', array($this, 'flash_message'));
+	}
+
+	/**
+	 * Filter on redirect_post_location
+	 *
+	 * @return void
+	 * @author 
+	 */
+	function redirect_post_location ($location) {
+		remove_filter('redirect_post_location', __FUNCTION__, $this->current_message);
+		$location = add_query_arg('message', $this->current_message, $location);
+		return $location;
+	}
+
+	function flash_message ($messages) {
+		array_merge($messages, $this->messages);
 	}
 }
