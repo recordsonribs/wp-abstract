@@ -106,7 +106,7 @@ class wp_abstract_post_type {
 			10 => sprintf("$this->single draft updated. <a target=\"_blank\" href=\"%s\">Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink($post->ID)))),
 		);
 
-		return $messages;
+		return array_merge($messages, $this->messages);
 	}
 	
 	function metaboxes () {
