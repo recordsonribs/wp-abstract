@@ -118,7 +118,7 @@ class wp_abstract_post_type {
 			'add_new_item' => "Add New $this->single",
 			'edit_item' => "Edit $this->single",
 			'new_item' => "New $this->single",
-			'view item' => "View $this->single",
+			'view_item' => "View $this->single",
 			'search_items' => "View $this->plural",
 			'not_found' => "No $this->plural found",
 			'not_found_in_trash' => "No $this->plural found in trash",
