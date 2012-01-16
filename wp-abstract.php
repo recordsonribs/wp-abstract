@@ -86,22 +86,22 @@ class wp_abstract_post_type {
 	}
 	
 	function post_updated_messages($messages) {
-		global $post, $post_ID;
+		global $post;
 		
 		$messages[$this->name] = array(
 			0 => '', // Unused in WordPress messages
-			1 => sprintf(__("$this->single updated. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post_ID)))),
+			1 => sprintf("$this->single updated. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID))),
 			2 => __("Custom field updated."),
 			3 => __("Custom field updated."),
 			4 => __("$this->single updated."),
-			5 => isset($_GET['revision']) ? sprintf( __("$this->single restored to revision from %s"), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6 => sprintf( __("$this->single. <a href='%s'>View $this->single</a>)", esc_url( get_permalink($post_ID) ) )),
+			5 => isset($_GET['revision']) ? sprintf( "$this->single restored to revision from %s", wp_post_revision_title( (int) $_GET['revision']), false) : false,
+			6 => sprintf( "$this->single published. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID) )),
 			7 => __("$this->single saved."),
-		    8 => sprintf( __("$this->single submitted. <a target='_blank' href='%s'>Preview $this->single</a>"), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
-			9 => sprintf(__("$this->single scheduled for <strong>%1$s</strong>, <a target='_blank' href='%$s'>Preview $this->single</a>")),
-			10 => sprintf( __('Book draft updated. <a target="_blank" href="%s">Preview book</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+		    8 => sprintf( "$this->single submitted. <a target='_blank' href='%s'>Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink($post->ID)))),
+			9 => sprintf('Page scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview page</a>', date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date)), esc_url( get_permalink($post->ID) )),
+			10 => sprintf("$this->single draft updated. <a target=\"_blank\" href=\"%s\">Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink($post->ID)))),
 		);
-		
+
 		return $messages;
 	}
 	
