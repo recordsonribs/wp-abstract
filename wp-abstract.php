@@ -166,7 +166,7 @@ class wp_abstract_post_type {
 	 * Filter on redirect_post_location
 	 *
 	 * @return void
-	 * @author 
+	 * @author Alex Andrews
 	 */
 	function redirect_post_location ($location) {
 		remove_filter('redirect_post_location', __FUNCTION__, $this->current_message);
