@@ -92,7 +92,7 @@ class wp_abstract_post_type {
 	function post_updated_messages($messages) {
 		global $post;
 		
-		$this->messages[$this->name] = array(
+		$this->messages = array(
 			0 => '', // Unused in WordPress messages
 			1 => sprintf("$this->single updated. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID))),
 			2 => __("Custom field updated."),
@@ -106,7 +106,9 @@ class wp_abstract_post_type {
 			10 => sprintf("$this->single draft updated. <a target=\"_blank\" href=\"%s\">Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink($post->ID)))),
 		);
 
-		return array_merge($messages, $this->messages);
+		$messages[$this->name] = $this->messages;
+
+		return $messages;
 	}
 	
 	function metaboxes () {
