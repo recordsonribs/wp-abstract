@@ -92,7 +92,6 @@ class wp_abstract_post_type {
 	function post_updated_messages($messages) {
 		global $post;
 		
-		$messages[$this->name] = array(
 		$this->messages[$this->name] = array(
 			0 => '', // Unused in WordPress messages
 			1 => sprintf("$this->single updated. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID))),
