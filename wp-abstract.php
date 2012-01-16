@@ -65,7 +65,6 @@ class wp_abstract_post_type {
 			'show_in_menu' => true,
 			'menu_position' => 50,
 			'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
-			'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
 			'register_meta_box_cb' => array($this, 'metaboxes'),
 			'rewrite' => array(
 				'slug' => strtolower($this->single),
