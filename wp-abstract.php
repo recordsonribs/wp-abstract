@@ -176,6 +176,12 @@ class wp_abstract_post_type {
 		return $location;
 	}
 
+	/**
+	 * Show the flash message you just created.
+	 *
+	 * @return void
+	 * @author Alex Andrews
+	 **/
 	function flash_message ($messages) {
 		array_merge($messages, $this->messages);
 	}
