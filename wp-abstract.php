@@ -34,9 +34,7 @@ class wp_abstract_post_type {
 	public $single = '';
 	public $plural = '';
 
-	private $messages = array();
-	private $current_message = '';
-	private $message_code = 99;
+	public $messages = array();
 
 	function __construct ($name, $single = false, $plural = false, $complex = false) {
 		if (substr($name, -1) == 's') {
@@ -95,6 +93,7 @@ class wp_abstract_post_type {
 		global $post;
 		
 		$messages[$this->name] = array(
+		$this->messages[$this->name] = array(
 			0 => '', // Unused in WordPress messages
 			1 => sprintf("$this->single updated. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID))),
 			2 => __("Custom field updated."),
