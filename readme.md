@@ -88,5 +88,5 @@ A quick list of other things this will implement soon enough.
 * Change the default text of any default metabox, easily.
 * Hierachical custom post types, handled.
 * Integration with [Meta-Box](https://github.com/rilwis/meta-box) - this sort of works if you create your custom post type by extending the class and overload the `metaboxes` function to add your functions.
-* CLI to create scaffold WordPress code, probably using [wp-cli](https://github.com/wp-cli/wp-cli)
+* CLI to create scaffold WordPress code, probably using [wp-cli](https://github.com/wp-cli/wp-cli).
 
