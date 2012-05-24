@@ -69,8 +69,13 @@ class WPAbstractPostType {
 		if ($parent) {
 			$overwrite['hierarchical'] = true;
 		}
-		
-		add_action('init', array ($this, 'init'));
+
+		add_action('init', array($this, 'init'));
+
+		// Overwrite the 'Enter title here' for the post type
+		if ($this->overwrite['title_prompt']){
+			add_filter('enter_title_here', array($this, 'enter_title_here'));
+		}
 	}
 	
 	function init () {
@@ -145,6 +150,16 @@ class WPAbstractPostType {
 			'not_found_in_trash' => "No $this->plural found in trash",
 			'menu_name' => $this->plural
 		);
+	}
+
+	function enter_title_here ($content) {
+	    global $post;
+	    
+	    if ($post->post_type != $this->name) {
+	        return $content;
+	    }
+
+	    return $this->overwrite['enter_title_here'];
 	}
 }
 
