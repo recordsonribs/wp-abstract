@@ -25,7 +25,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-class wp_abstract_post_type {
+class WP_Abstract_Post_Type {
 	public $name = '';
 	public $single = '';
 	public $plural = '';
