@@ -76,6 +76,11 @@ class WPAbstractPostType {
 		if ($this->overwrite['title_prompt']){
 			add_filter('enter_title_here', array($this, 'enter_title_here'));
 		}
+
+		// Overwrite the little instruction underneith the Featured Image metabox
+		if ($this->overwrite['featured_image_instruction']) {
+			add_filter('admin_post_thumbnail_html', array($this, 'admin_post_thumbnail_html'));
+		}
 	}
 	
 	function init () {
@@ -160,6 +165,16 @@ class WPAbstractPostType {
 	    }
 
 	    return $this->overwrite['enter_title_here'];
+	}
+
+	function admin_post_thumbnail_html ($content) {
+	    global $post;
+	    
+	    if ($post->post_type != $this->name) {
+	        return $content;
+	    }
+	    
+	    return $content .= $this->overwrite['featured_image_instruction'];
 	}
 }
 
