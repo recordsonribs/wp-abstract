@@ -81,6 +81,11 @@ class WPAbstractPostType {
 		if ($this->overwrite['featured_image_instruction']) {
 			add_filter('admin_post_thumbnail_html', array($this, 'admin_post_thumbnail_html'));
 		}
+
+		// Overwrite metabox title text!
+		if ($this->overwrite['meta_box_titles']) {
+			add_action('add_meta_boxes', array($this, 'add_meta_boxes'), 10, 2);
+		}
 	}
 	
 	function init () {
@@ -176,6 +181,22 @@ class WPAbstractPostType {
 	    
 	    return $content .= '<p>' . $this->overwrite['featured_image_instruction'] . '</p>';
 	}
+
+	function add_meta_boxes ($post_type, $post) {
+		global $wp_meta_boxes;
+
+		// Lets smoosh through these and make changes as we see fit!
+		foreach (array('side', 'normal') as $column){
+			foreach (array('core', 'low') as $placing) {
+				foreach ($wp_meta_boxes[$this->name][$column][$placing] as $meta_box_name => $meta_box) {
+					foreach ($this->overwrite['meta_box_titles'] as $overwrite => $with){
+						if ($meta_box['title'] == $overwrite) {
+							$wp_meta_boxes[$this->name][$column][$placing][$meta_box_name]['title'] = $with;
+						}
+					}
+				}
+			}	
+		}
 	}
 }
 
