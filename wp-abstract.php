@@ -25,7 +25,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-class WP_Abstract_Post_Type {
+class WPAbstractPostType {
 	public $name = '';
 	public $single = '';
 	public $plural = '';
@@ -36,7 +36,7 @@ class WP_Abstract_Post_Type {
 	// Set to the parent custom post type - for ease of testing custom post types
 	public $parent = false;
 
-	function __construct ($name, $single = false, $plural = false, $overwrite = null, $parent = false) {
+	function __construct ($name, $single = false, $plural = false, $overwrite = false, $parent = false) {
 		// Fake named parameters - PHP Y U NO RUBY?
 		if (is_array($name)) extract($name, EXTR_IF_EXISTS);
 
