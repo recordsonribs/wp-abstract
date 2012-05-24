@@ -37,6 +37,8 @@ class wp_abstract_post_type {
 	public $parent = false;
 
 	function __construct ($name, $single = false, $plural = false, $overwrite = null, $parent = false) {
+		// Fake named parameters - PHP Y U NO RUBY?
+		if (is_array($name)) extract($name, EXTR_IF_EXISTS);
 
 		if (substr($name, -1) == 's') {
 			$this->name = rtrim($name, 's');
