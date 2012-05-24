@@ -49,11 +49,16 @@ class wp_abstract_post_type {
 		if (! $plural) {
 			$this->plural = $this->single . 's';
 		}
+
+		if ($overwrite) {
+			$this->overwrite = $overwrite;
+		}
 		
 		add_action('init', array ($this, 'init'));
 	}
 	
 	function init ($overwrite = array()) {
+	function init () {
 		$args = array(
 			'labels' => $this->create_labels(),
 			'description' => '',
@@ -77,7 +82,7 @@ class wp_abstract_post_type {
 			'show_in_nav_menus' => true,
 		);
 		
-		$args = array_merge($args, $overwrite);
+		$args = array_merge($args, $this->overwrite);
 		
 		register_post_type ($this->name, $args);
 
