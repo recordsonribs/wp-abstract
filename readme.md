@@ -1,5 +1,13 @@
 # WordPress Abstract
 
-Not for production, very much a work in progress.
+Creating custom post types and other things in WordPress can sometimes be a bit annoying. WordPress abstract, fro the good folks at [Records On Ribs](http://recordsonribs.com) hope to make it a little easier.
 
-An attempt to make a series of abstractions that make WordPress more tolerable to use for those spoilt by contemporary MVC frameworks.
+## Creating a Custom Post Type
+
+Simply do the following:
+    
+    $records = new WPAbstractPostType('records');
+
+And that is it! A custom post type called records will be created with quite a few bells and whistles.
+
+## Overwriting Text In Metaboxes
