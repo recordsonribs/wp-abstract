@@ -6,7 +6,7 @@ The hope of WordPress Abstract is that it provides a simple way in which to do t
 
 ## Adding WordPress Abstract To Your Code
 
-Either install WordPress Abstract as a plugin and begin using the below, or simply include this one file in your code for your theme or plugin using `require_once`. Done!
+Either install WordPress Abstract as a WordPress plugin in the standard way and begin using as below, or simply include this one file in your code for your theme or plugin using `require_once`. Done!
 
 ## Custom Post Types
 
