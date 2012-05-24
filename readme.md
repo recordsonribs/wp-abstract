@@ -71,7 +71,7 @@ Right now, the only thing you can over-write is the instructions for the Feature
 
 Soon we shall use the translation matrix to overwrite anything you see on screen!
 
-## Overwriting The Title Prompt
+### Overwriting The Title Prompt
 
 We've all seen the boring 'Enter title here' in WordPress thousands of times. Lets change it for our record post type.
 
