@@ -8,7 +8,9 @@ The hope of WordPress Abstract is that it provides a simple way in which to do t
 
 Either install WordPress Abstract as a plugin and begin using the below, or simply include this one file in your code for your theme or plugin using `require_once`. Done!
 
-## Creating a Custom Post Type
+## Custom Post Types
+
+### Creating a Custom Post Type
 
 Simply do the following:
     
@@ -26,7 +28,7 @@ Done! And say the plural of 'thing' is 'stuffs'?
 
 And we are away!
 
-## Using Named Arguments
+### Using Named Arguments
 
 Sadly for whatever reason the PHP developers don't like named arguments. But lets fake it anyway by running an array into WPAbstractPostType.
 
@@ -34,7 +36,7 @@ Sadly for whatever reason the PHP developers don't like named arguments. But let
 
 And we are away! The rest of the examples assume this syntax.
 
-## Using WordPress Normal Custom Post Type Settings
+### Using WordPress Normal Custom Post Type Settings
 
 Say you want to create records, but want to make `has_archive` when the custom post type is setup, which defaults to true, instead be false? We can do this by using the ovewrite parameter.
 
@@ -45,7 +47,7 @@ Say you want to create records, but want to make `has_archive` when the custom p
 
 And we have no archive!
 
-## Overwriting Titles Of Default Metaboxes
+### Overwriting Titles Of Default Metaboxes
 
 When you create a custom post type you are left with a load of WordPress boilerplate text inherited from posts and pages hanging about. But we don't 'Featured Image', we want something like 'Record Sleeve'! No problem at all, you don't even need to know the name of the metabox internally, just the text it normally displays, in this case, 'Featured Image'.
 
@@ -58,7 +60,7 @@ Then just issue the following, passing our changes into an array in overwrite wi
 
 Done! The when you run `the_post_thumbnail();` on the front end then it'll show what the user submitted in the 'Record Sleeve' metabox.
 
-## Overwriting Everything In Default Metaboxes
+### Overwriting Everything In Default Metaboxes
 
 Right now, the only thing you can over-write is the instructions for the Featured Image.
 
@@ -76,6 +78,47 @@ We've all seen the boring 'Enter title here' in WordPress thousands of times. Le
 	$records = new WPAbstractPostType(array('name' => 'records', 'overwrite' => array('enter_post_here' => 'The title of the record'));
 
 And we are away!
+
+## Flash Messages
+
+If you have an error in your submission or something you want to show a quick flash message to let the user know in the admin interface. Or perhaps you want a permanent message, for example, telling the admin to update a setting.
+
+WordPress Abstract can help out here as well, and you get a deal for free - for example, the ability of the user to surpress an error message.
+
+It uses good old transients to save the queue of messages (though this may change in future) and remembers if messages are hidden on a per user basis. Because of the queuing, you can add as many as you like at the same time as well.
+
+### Setting Up
+
+Simple create an instance of WordPress Abstract Flash - done!
+
+	$flash = new WPAbstractFlash();
+
+We'll probably convert this to a singleton soon, but for the moment, lets use this. It need to be a global variable obviously.
+
+### Create A Notice
+
+A notice is something that can be used from, say, when a user saves a custom post type.
+
+    $flash->notice('Something happened - I am telling you about.');
+
+### Create A Error Message
+
+A error message in red can be displayed using the following.
+
+	$flash->error('Something went badly wrong.');
+
+### Create A Sticky Message
+
+Sticking messages come in two flavours, the same as normal errors, notice and error.
+
+    $flash->sticky_notice('Telling you to do something');
+    $flash->sticky_error('Something is badly wrong.');
+
+You can clear the sticky notices in code.
+
+    $flash->clear_sticky_error('Text of the error to clear.');
+    $flash->clear_sticky_notice('Text of the notice to clear.');
+    $flash->clear_sticky_messages(); // Clear all sticky messages.
 
 ## Soon
 
