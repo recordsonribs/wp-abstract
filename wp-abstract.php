@@ -47,6 +47,11 @@ class wp_abstract_post_type {
 		}
 		
 		if (! $plural) {
+
+		if ($plural) {
+			$this->plural = $plural;
+		}
+		else {
 			$this->plural = $this->single . 's';
 		}
 
