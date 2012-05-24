@@ -57,7 +57,6 @@ class wp_abstract_post_type {
 		add_action('init', array ($this, 'init'));
 	}
 	
-	function init ($overwrite = array()) {
 	function init () {
 		$args = array(
 			'labels' => $this->create_labels(),
@@ -131,4 +130,3 @@ class wp_abstract_post_type {
 			'menu_name' => $this->plural
 		);
 	}
-}
