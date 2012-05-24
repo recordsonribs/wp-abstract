@@ -1,6 +1,6 @@
 # WordPress Abstract
 
-Creating custom post types and other things in WordPress can sometimes be a bit annoying. WordPress Abstract, from [Records On Ribs](http://recordsonribs.com) hopes to make it a little easier. We are using it to re-write our [Ribcage](http://github.com/recordsonrib/ribcage) plugin faster.
+Creating custom post types and using other advanced features of WordPress can sometimes be a bit annoying, resulting in very repetitive code. WordPress Abstract, from [Records On Ribs](http://recordsonribs.com) hopes to make it a little easier from the perspective of the coder. We are using it to re-write our [Ribcage](http://github.com/recordsonrib/ribcage) plugin faster.
 
 The hope of WordPress Abstract is that it provides a simple way in which to do things in WordPress that may be a little obscure, so plugins and themes aren't rammed with boilerplate code and you can get down to making functionality.
 
