@@ -38,7 +38,6 @@ class wp_abstract_post_type {
 
 	function __construct ($name, $single = false, $plural = false, $overwrite = null, $parent = false) {
 
-	function __construct ($name, $single = false, $plural = false, $complex = false) {
 		if (substr($name, -1) == 's') {
 			$this->name = rtrim($name, 's');
 		}
