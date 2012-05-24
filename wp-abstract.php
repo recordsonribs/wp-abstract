@@ -174,7 +174,8 @@ class WPAbstractPostType {
 	        return $content;
 	    }
 	    
-	    return $content .= $this->overwrite['featured_image_instruction'];
+	    return $content .= '<p>' . $this->overwrite['featured_image_instruction'] . '</p>';
+	}
 	}
 }
 
