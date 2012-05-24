@@ -30,6 +30,13 @@ class wp_abstract_post_type {
 	public $single = '';
 	public $plural = '';
 
+	// Overwrite the defaults for the custom post type.
+	private $overwrite = array();
+
+	// Set to the parent custom post type - for ease of testing custom post types
+	public $parent = false;
+
+	function __construct ($name, $single = false, $plural = false, $overwrite = null, $parent = false) {
 
 	function __construct ($name, $single = false, $plural = false, $complex = false) {
 		if (substr($name, -1) == 's') {
@@ -55,6 +62,11 @@ class wp_abstract_post_type {
 
 		if ($overwrite) {
 			$this->overwrite = $overwrite;
+		}
+
+		// Make sure that we over-write the 'hiearchical' variable for custom post types with parents.
+		if ($parent) {
+			$overwrite['hierarchical'] = true;
 		}
 		
 		add_action('init', array ($this, 'init'));
@@ -133,3 +145,7 @@ class wp_abstract_post_type {
 			'menu_name' => $this->plural
 		);
 	}
+}
+
+
+
