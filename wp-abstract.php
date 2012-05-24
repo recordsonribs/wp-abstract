@@ -30,7 +30,6 @@ class wp_abstract_post_type {
 	public $single = '';
 	public $plural = '';
 
-	public $messages = array();
 
 	function __construct ($name, $single = false, $plural = false, $complex = false) {
 		if (substr($name, -1) == 's') {
