@@ -45,8 +45,6 @@ class wp_abstract_post_type {
 		else {
 			$this->single = ucfirst(strtolower($this->name));
 		}
-		
-		if (! $plural) {
 
 		if ($plural) {
 			$this->plural = $plural;
