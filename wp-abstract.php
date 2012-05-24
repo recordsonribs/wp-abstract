@@ -3,7 +3,7 @@
 Plugin Name: WordPress Abstract
 Plugin URI: http:/recordsonribs.com/ribcage
 Description: A set of useful OO abstractions for common WordPress tasks.
-Version: 0.1
+Version: 0.2
 Author: Alex Andrews
 Author URI: http:/alexandrews.info
 License: GPL2
