@@ -24,12 +24,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
-if (!class_exists('WPAbstractPostType')) {
-
-	class WPAbstractPostType
-	{
-		public $name = '';
+if ( ! class_exists( 'WP_Abstract_Post_Type' ) ) {
+	class WP_Abstract_Post_Type {
+		public $name   = '';
 		public $single = '';
 		public $plural = '';
 
@@ -39,104 +36,102 @@ if (!class_exists('WPAbstractPostType')) {
 		// Set to the parent custom post type - for ease of testing custom post types
 		public $parent = false;
 
-		function __construct ($name, $single = false, $plural = false, $overwrite = false, $parent = false)
-		{
+		function __construct( $name, $single = false, $plural = false, $overwrite = false, $parent = false ) {
 			// Fake named parameters - PHP Y U NO RUBY?
-			if (is_array($name)) extract($name, EXTR_IF_EXISTS);
+			if ( is_array( $name ) ) 
+				extract( $name, EXTR_IF_EXISTS );
 
-			if (substr($name, -1) == 's') {
-				$this->name = rtrim($name, 's');
+			if ( substr( $name, -1 ) == 's' ) {
+				$this->name = rtrim( $name, 's' );
 			} else {
 				$this->name = $name;
 			}
 
-			if ($single) {
-				$this->single = ucfirst(strtolower($single));
+			if ( $single ) {
+				$this->single = ucfirst( strtolower( $single ) );
 			} else {
-				$this->single = ucfirst(strtolower($this->name));
+				$this->single = ucfirst( strtolower( $this->name ) );
 			}
 
-			if ($plural) {
+			if ( $plural ) {
 				$this->plural = $plural;
 			} else {
 				$this->plural = $this->single . 's';
 			}
 
-			if ($overwrite) {
+			if ( $overwrite ) {
 				$this->overwrite = $overwrite;
 			}
 
 			// Make sure that we over-write the 'hiearchical' variable for custom post types with parents.
-			if ($parent) {
+			if ( $parent ) {
 				$overwrite['hierarchical'] = true;
 			}
 
-			add_action('init', array($this, 'init'));
+			add_action( 'init', array( $this, 'init' ) );
 
 			// Overwrite the 'Enter title here' for the post type
-			if ($this->overwrite['title_prompt']) {
-				add_filter('enter_title_here', array($this, 'enter_title_here'));
+			if ( $this->overwrite['title_prompt'] ) {
+				add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			}
 
 			// Overwrite the little instruction underneith the Featured Image metabox
-			if ($this->overwrite['featured_image_instruction']) {
-				add_filter('admin_post_thumbnail_html', array($this, 'admin_post_thumbnail_html'));
+			if ( $this->overwrite['featured_image_instruction'] ) {
+				add_filter( 'admin_post_thumbnail_html', array( $this, 'admin_post_thumbnail_html' ) );
 			}
 
 			// Overwrite metabox title text!
-			if ($this->overwrite['meta_box_titles']) {
-				add_action('add_meta_boxes', array($this, 'add_meta_boxes'), 10, 2);
+			if ( $this->overwrite['meta_box_titles'] ) {
+				add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 			}
 		}
 
-		function init ()
-		{
+		function init() {
 			$args = array(
-				'labels' => $this->create_labels(),
-				'description' => '',
-				'public' => true,
-				'publicly_queryable' => true,
-				'show_ui' => true,
-				'capability_type' => 'post',
-				'has_archive' => true,
-				'hierarchical' => false,
-				'show_in_menu' => true,
-				'menu_position' => 50,
-				'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
-				'register_meta_box_cb' => array($this, 'metaboxes'),
-				'rewrite' => array(
-					'slug' => strtolower($this->single),
-					'with_front' => false,
-					'feeds' => true,
-					'pages' => true
+				'labels'               => $this->create_labels(),
+				'description'          => '',
+				'public'               => true,
+				'publicly_queryable'   => true,
+				'show_ui'              => true,
+				'capability_type'      => 'post',
+				'has_archive'          => true,
+				'hierarchical'         => false,
+				'show_in_menu'         => true,
+				'menu_position'        => 50,
+				'supports'             => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' ),
+				'register_meta_box_cb' => array( $this, 'metaboxes' ),
+				'rewrite'              => array(
+					                      'slug'       => strtolower( $this->single ),
+					                      'with_front' => false,
+					                      'feeds'      => true,
+					                      'pages'      => true,
 				),
-				'can_export' => true,
-				'show_in_nav_menus' => true,
+				'can_export'           => true,
+				'show_in_nav_menus'    => true,
 			);
 
-			$args = array_merge($args, $this->overwrite);
+			$args = array_merge( $args, $this->overwrite );
 
-			register_post_type ($this->name, $args);
+			register_post_type( $this->name, $args );
 
-			add_filter('post_updated_messages', array($this, 'post_updated_messages'));
+			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		}
 
-		function post_updated_messages($messages)
-		{
+		function post_updated_messages( $messages ) {
 			global $post;
 
 			$this->messages = array(
-				0 => '', // Unused in WordPress messages
-				1 => sprintf("$this->single updated. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID))),
-				2 => __("Custom field updated."),
-				3 => __("Custom field updated."),
-				4 => __("$this->single updated."),
-				5 => isset($_GET['revision']) ? sprintf( "$this->single restored to revision from %s", wp_post_revision_title( (int) $_GET['revision']), false) : false,
-				6 => sprintf( "$this->single published. <a href='%s'>View $this->single</a>", esc_url(get_permalink($post->ID) )),
-				7 => __("$this->single saved."),
-				8 => sprintf( "$this->single submitted. <a target='_blank' href='%s'>Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink($post->ID)))),
-				9 => sprintf('Page scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview page</a>', date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date)), esc_url( get_permalink($post->ID) )),
-				10 => sprintf("$this->single draft updated. <a target=\"_blank\" href=\"%s\">Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink($post->ID)))),
+				0  => '', // Unused in WordPress messages
+				1  => sprintf( "$this->single updated. <a href='%s'>View $this->single</a>", esc_url( get_permalink( $post->ID ) ) ),
+				2  => __( 'Custom field updated.' ),
+				3  => __( 'Custom field updated.' ),
+				4  => __( "$this->single updated." ),
+				5  => isset( $_GET['revision'] ) ? sprintf( "$this->single restored to revision from %s", wp_post_revision_title( (int) $_GET['revision'] ), false ) : false,
+				6  => sprintf( "$this->single published. <a href='%s'>View $this->single</a>", esc_url( get_permalink( $post->ID ) ) ),
+				7  => __( "$this->single saved." ),
+				8  => sprintf( "$this->single submitted. <a target='_blank' href='%s'>Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) ),
+				9  => sprintf( 'Page scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview page</a>', date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post->ID ) ) ),
+				10 => sprintf( "$this->single draft updated. <a target=\"_blank\" href=\"%s\">Preview $this->single</a>", esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) ),
 			);
 
 			$messages[$this->name] = $this->messages;
@@ -144,61 +139,56 @@ if (!class_exists('WPAbstractPostType')) {
 			return $messages;
 		}
 
-		function metaboxes ()
-		{
+		function metaboxes() {
 			return;
 		}
 
-		function create_labels ()
-		{
+		function create_labels() {
 			return array(
-				'name' => $this->plural,
-				'singular_name' => $this->single,
-				'add_new' => __("Add New $this->single"),
-				'all_items' => "All $this->plural",
-				'add_new_item' => "Add New $this->single",
-				'edit_item' => "Edit $this->single",
-				'new_item' => "New $this->single",
-				'view_item' => "View $this->single",
-				'search_items' => "View $this->plural",
-				'not_found' => "No $this->plural found",
+				'name'               => $this->plural,
+				'singular_name'      => $this->single,
+				'add_new'            => __( "Add New $this->single" ),
+				'all_items'          => "All $this->plural",
+				'add_new_item'       => "Add New $this->single",
+				'edit_item'          => "Edit $this->single",
+				'new_item'           => "New $this->single",
+				'view_item'          => "View $this->single",
+				'search_items'       => "View $this->plural",
+				'not_found'          => "No $this->plural found",
 				'not_found_in_trash' => "No $this->plural found in trash",
-				'menu_name' => $this->plural
+				'menu_name' => $this->plural,
 			);
 		}
 
-		function enter_title_here ($content)
-		{
+		function enter_title_here( $content ) {
 			global $post;
 
-			if ($post->post_type != $this->name) {
+			if ( $post->post_type != $this->name ) {
 				return $content;
 			}
 
 			return $this->overwrite['enter_title_here'];
 		}
 
-		function admin_post_thumbnail_html ($content)
-		{
+		function admin_post_thumbnail_html( $content ) {
 			global $post;
 
-			if ($post->post_type != $this->name) {
+			if ( $post->post_type != $this->name ) {
 				return $content;
 			}
 
 			return $content .= '<p>' . $this->overwrite['featured_image_instruction'] . '</p>';
 		}
 
-		function add_meta_boxes ($post_type, $post)
-		{
+		function add_meta_boxes( $post_type, $post ) {
 			global $wp_meta_boxes;
 
 			// Lets smoosh through these and make changes as we see fit!
-			foreach (array('side', 'normal') as $column) {
-				foreach (array('core', 'low') as $placing) {
-					foreach ($wp_meta_boxes[$this->name][$column][$placing] as $meta_box_name => $meta_box) {
-						foreach ($this->overwrite['meta_box_titles'] as $overwrite => $with) {
-							if ($meta_box['title'] == $overwrite) {
+			foreach ( array( 'side', 'normal' ) as $column ) {
+				foreach ( array( 'core', 'low' ) as $placing ) {
+					foreach ( $wp_meta_boxes[$this->name][$column][$placing] as $meta_box_name => $meta_box ) {
+						foreach ( $this->overwrite['meta_box_titles'] as $overwrite => $with ) {
+							if ( $meta_box['title'] == $overwrite ) {
 								$wp_meta_boxes[$this->name][$column][$placing][$meta_box_name]['title'] = $with;
 							}
 						}
@@ -208,7 +198,6 @@ if (!class_exists('WPAbstractPostType')) {
 		}
 
 	}
-
 }
 
 /**
@@ -223,7 +212,7 @@ if (!class_exists('WPAbstractPostType')) {
  * @version 1.0
  **/
 
-if (! class_exists('WPAbstractFlash')) {
+if ( ! class_exists( 'WP_Abstract_Flash' ) ) {
 	/**
 	 * A nice little system of displaying error and status messages in WordPress.
 	 *
@@ -232,8 +221,7 @@ if (! class_exists('WPAbstractFlash')) {
 	 * @version 1.0
 	 * @todo Show certain messages to certain users, or certain levels of ability.
 	 **/
-	class WPAbstractFlash
-	{
+	class WP_Abstract_Flash {
 		public $messages = array();
 		public $sticky_messages = null;
 
@@ -250,29 +238,28 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function __construct ($message = false, $type = 'notice')
-		{
-			if ($message) {
-				$this->flash($message, $type);
+		function __construct( $message = false, $type = 'notice' ) {
+			if ( $message ) {
+				$this->flash( $message, $type );
 			}
 
-			$this->sticky_messages = get_transient('wordpress_flash_sticky_messages');
+			$this->sticky_messages = get_transient( 'wordpress_flash_sticky_messages' );
 
-			if (! $this->sticky_messages) {
+			if ( ! $this->sticky_messages ) {
 				$this->sticky_messages = array();
 			}
 
 			$this->user_id = get_current_user_id();
 
-			$this->user_suppress = get_user_meta($this->user_id, 'wordpress_flash_suppressed_messages', true);
+			$this->user_suppress = get_user_meta( $this->user_id, 'wordpress_flash_suppressed_messages', true );
 
-			if (! $this->user_suppress) {
-				$this->user_suppress = array('sticky_messages' => array(), 'messages' => array());
+			if ( ! $this->user_suppress ) {
+				$this->user_suppress = array( 'sticky_messages' => array(), 'messages' => array() );
 				$this->save_suppressed_messages();
 			}
 
-			add_action('admin_notices', array(&$this, 'render_messages'));
-			add_action('admin_init', array(&$this, 'admin_init'));
+			add_action( 'admin_notices', array( &$this, 'render_messages' ) );
+			add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		}
 
 		/**
@@ -282,10 +269,9 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function admin_init ()
-		{
-			if (isset($_GET['wpf_suppress_sticky'])) {
-				$this->suppress_sticky_message($_GET['wpf_suppress_sticky']);
+		function admin_init() {
+			if ( isset( $_GET['wpf_suppress_sticky'] ) ) {
+				$this->suppress_sticky_message( $_GET['wpf_suppress_sticky'] );
 			}
 		}
 
@@ -301,11 +287,10 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function flash ($message, $type = 'notice')
-		{
-			$add = array('message' => $message, 'type' => $type);
+		function flash( $message, $type = 'notice' ) {
+			$add = array( 'message' => $message, 'type' => $type );
 
-			array_push($this->messages, $add);
+			array_push( $this->messages, $add );
 
 			return $add;
 		}
@@ -323,9 +308,8 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function notice ($message)
-		{
-			$this->flash($message, 'notice');
+		function notice( $message ) {
+			$this->flash( $message, 'notice' );
 		}
 
 		/**
@@ -341,9 +325,8 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function error ($message)
-		{
-			$this->flash($message, 'error');
+		function error( $message ) {
+			$this->flash( $message, 'error' );
 		}
 
 		/**
@@ -359,21 +342,19 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function sticky ($message, $type = 'notice')
-		{
-			$add = array('message' => $message, 'type' => $type);
+		function sticky( $message, $type = 'notice' ) {
+			$add = array( 'message' => $message, 'type' => $type );
 
 			// Check to see if we already have this sticky
 			// If we do, then don't add it again.
-			if (count($this->sticky_messages) != 0) {
-				foreach ($this->sticky_messages as $message) {
-				if ($message['message'] == $add['message']) {
-					return $add;
+			if ( count( $this->sticky_messages ) != 0 ) {
+				foreach ( $this->sticky_messages as $message ) {
+					if ( $message['message'] == $add['message'] )
+						return $add;
 				}
 			}
-			}
 
-			array_push($this->sticky_messages, $add);
+			array_push( $this->sticky_messages, $add );
 			$this->save_sticky_messages();
 
 			return $add;
@@ -387,10 +368,9 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function save_sticky_messages ()
-		{
+		function save_sticky_messages() {
 			// Save for a year.
-			set_transient('wordpress_flash_sticky_messages', $this->sticky_messages, 31536000);
+			set_transient( 'wordpress_flash_sticky_messages', $this->sticky_messages, 31536000 );
 		}
 
 		/**
@@ -402,10 +382,9 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function clear_sticky_messages ()
-		{
+		function clear_sticky_messages() {
 			$this->sticky_messages = array();
-			delete_transient('wordpress_flash_sticky_messages');
+			delete_transient( 'wordpress_flash_sticky_messages' );
 		}
 
 		/**
@@ -418,23 +397,21 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		 function clear_sticky_message ($message)
-		 {
+		function clear_sticky_message( $message ) {
 			 $found = false;
 
-			 foreach ($this->sticky_messages as $pos => $value) {
-				 if ($value['message'] == $message) {
-					 unset ($this->sticky_messages[$pos]);
-					 $found = true;
-					 break;
-				 }
-			 }
+			foreach ( $this->sticky_messages as $pos => $value ) {
+				if ( $value['message'] == $message ) {
+					unset ($this->sticky_messages[$pos]);
+					$found = true;
+					break;
+				}
+			}
 
-			 if ($found) {
-				 $this->save_sticky_messages();
-			 }
+			if ( $found )
+				$this->save_sticky_messages();
 
-			 return $found;
+			return $found;
 		 }
 
 		/**
@@ -447,11 +424,9 @@ if (! class_exists('WPAbstractFlash')) {
 		  * @version 1.0
 		  * @since 1.0
 		  **/
-		 function clear_sticky_error ($message)
-		 {
-			 return $this->clear_sticky_message($message);
-		 }
-
+		function clear_sticky_error( $message ) {
+			return $this->clear_sticky_message( $message );
+		}
 
 		/**
 		  * Convenience wrapper function for clearing a sticky notice.
@@ -463,10 +438,9 @@ if (! class_exists('WPAbstractFlash')) {
 		  * @version 1.0
 		  * @since 1.0
 		  **/
-		 function clear_sticky_notice ($message)
-		 {
-			 return $this->clear_sticky_message($message);
-		 }
+		function clear_sticky_notice( $message ) {
+			return $this->clear_sticky_message( $message );
+		}
 
 		/**
 		 * Adds a sticky message of the type 'error' to the queue.
@@ -481,9 +455,8 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function sticky_error ($message)
-		{
-			$this->sticky($message, 'error');
+		function sticky_error( $message ) {
+			$this->sticky( $message, 'error' );
 		}
 
 		/**
@@ -499,9 +472,8 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function sticky_notice ($message)
-		{
-			$this->sticky($message, 'notice');
+		function sticky_notice( $message ) {
+			$this->sticky( $message, 'notice' );
 		}
 
 		/**
@@ -512,21 +484,20 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function render_messages ()
-		{
-			if ((count($this->sticky_messages) == 0) && (count($this->messages) == 0)) {
+		function render_messages(){
+			if ( (count( $this->sticky_messages ) == 0) && ( count( $this->messages ) == 0 ) ) {
 				return;
 			}
 
-			foreach ($this->sticky_messages as $pos => $message) {
-				if (! $this->user_suppress['sticky_messages'][$pos]) {
-					$this->render_message($message['message'], $message['type'], $pos, true);
+			foreach ( $this->sticky_messages as $pos => $message ) {
+				if ( ! $this->user_suppress['sticky_messages'][$pos] ) {
+					$this->render_message( $message['message'], $message['type'], $pos, true );
 				}
 			}
 
-			foreach ($this->messages as $pos => $message) {
-				if (! $this->user_suppress['messages'][$pos]) {
-					$this->render_message($message['message'], $message['type'], $pos);
+			foreach ( $this->messages as $pos => $message ) {
+				if ( ! $this->user_suppress['messages'][$pos] ) {
+					$this->render_message( $message['message'], $message['type'], $pos );
 				}
 			}
 		}
@@ -539,11 +510,10 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function suppress_sticky_message ($id)
-		{
-			$this->user_suppress['sticky_messages'][$id] = array('message' => $this->sticky_messages[$id]['message'], 'type' => $this->sticky_messages[$id]['type']);
+		function suppress_sticky_message( $id ) {
+			$this->user_suppress['sticky_messages'][$id] = array( 'message' => $this->sticky_messages[$id]['message'], 'type' => $this->sticky_messages[$id]['type'] );
 			$this->save_suppressed_messages();
-			$this->notice('Gone forever!');
+			$this->notice( 'Gone forever!' );
 		}
 
 		/**
@@ -555,9 +525,8 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function clear_suppressed_messages ()
-		{
-			$this->user_suppress = array('sticky_messages' => array(), 'messages' => array());
+		function clear_suppressed_messages() {
+			$this->user_suppress = array( 'sticky_messages' => array(), 'messages' => array() );
 			$this->save_suppressed_messages();
 		}
 
@@ -568,9 +537,8 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function save_suppressed_messages ()
-		{
-			update_user_meta($this->user_id, 'wordpress_flash_suppressed_messages', $this->user_suppress);
+		function save_suppressed_messages() {
+			update_user_meta( $this->user_id, 'wordpress_flash_suppressed_messages', $this->user_suppress );
 		}
 
 		/**
@@ -583,21 +551,20 @@ if (! class_exists('WPAbstractFlash')) {
 		 * @version 1.0
 		 * @since 1.0
 		 **/
-		function render_message ($message, $type = 'notice', $id, $sticky = false)
-		{
-			  if ($type == 'error') {
+		function render_message( $message, $type = 'notice', $id, $sticky = false ) {
+			if ( $type == 'error' ) {
 				echo '<div id="message" class="error">';
-			  } else {
+			} else {
 				echo '<div id="message" class="updated fade">';
-			  }
+			}
 
-			  echo "<p>$message</p>";
+			echo "<p>$message</p>";
 
-			  if ($sticky) {
-				  echo "<p><a href='?wpf_suppress_sticky=$id'>Don't show me this message again.</a></p>";
-			  }
+			if ( $sticky ) {
+			  echo "<p><a href='?wpf_suppress_sticky=$id'>Don't show me this message again.</a></p>";
+			}
 
-			  echo '</div>';
+			echo '</div>';
 		}
 	}
 }
