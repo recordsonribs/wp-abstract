@@ -1,5 +1,7 @@
 # WordPress Abstract
 
+[![Build Status](https://api.travis-ci.org/recordsonribs/wp-abstract.png)](http://travis-ci.org/recordsonribs/wp-abstract)
+
 Creating custom post types and using other advanced features of WordPress can sometimes be a bit annoying, resulting in very repetitive code. 
 
 WordPress Abstract, from [Records On Ribs](http://recordsonribs.com) hopes to make it a little easier from the perspective of the coder. We are using it to re-write our [Ribcage](http://github.com/recordsonrib/ribcage) plugin faster.
@@ -16,25 +18,25 @@ Either install WordPress Abstract as a WordPress plugin in the standard way and 
 
 Simply do the following:
     
-    $records = new WPAbstractPostType('records');
+    $records = new WP_Abstract_Post_Type( 'records' );
 
 And that is it! A custom post type called records will be created with quite a few bells and whistles.
 
 Okay, so you want the custom post type to be called internally 'something' and in the interface 'thing'?
 
-    $something = new WPAbstractPostType('something', 'thing');
+    $something = new WP_Abstract_Post_Type( 'something', 'thing' );
 
 Done! And say the plural of 'thing' is 'stuffs'?
 
-    $something = new WPAbstractPostType('something', 'thing', 'stuffs');
+    $something = new WP_Abstract_Post_Type( 'something', 'thing', 'stuffs' );
 
 And we are away!
 
 ### Using Named Arguments
 
-Sadly for whatever reason the PHP developers don't like named arguments. But lets fake it anyway by running an array into WPAbstractPostType.
+Sadly for whatever reason the PHP developers don't like named arguments. But lets fake it anyway by running an array into WP_Abstract_Post_Type.
 
-    $records = new WPAbstractPostType(array('name' => 'records'));
+    $records = new WP_Abstract_Post_Type( array( 'name' => 'records' ) );
 
 And we are away! The rest of the examples assume this syntax.
 
@@ -42,10 +44,10 @@ And we are away! The rest of the examples assume this syntax.
 
 Say you want to create records, but want to make `has_archive` when the custom post type is setup, which defaults to true, instead be false? We can do this by using the ovewrite parameter.
 
-	$params = array('name' => 'records');
-	$params['overwrite'] = array('has_archive' => false);
+	$params = array( 'name' => 'records' );
+	$params['overwrite'] = array( 'has_archive' => false );
 
-	$records = new WPAbstractPostType($params);
+	$records = new WP_Abstract_Post_Type( $params );
 
 And we have no archive!
 
@@ -55,10 +57,10 @@ When you create a custom post type you are left with a load of WordPress boilerp
 
 Then just issue the following, passing our changes into an array in overwrite with the name 'meta_box_titles'.
 
-    $meta_box_titles = array('Featured Image' => 'Record Sleeve');
-    $overwrite = array('meta_box_titles' => $meta_box_titles);
+    $meta_box_titles = array( 'Featured Image' => 'Record Sleeve' );
+    $overwrite = array( 'meta_box_titles' => $meta_box_titles );
 
-    $records = new WPAbstractPostType(array('name' => 'records', 'overwrite' => $overwrite);
+    $records = new WP_Abstract_Post_Type( array( 'name' => 'records', 'overwrite' => $overwrite );
 
 Done! The when you run `the_post_thumbnail();` on the front end then it'll show what the user submitted in the 'Record Sleeve' metabox.
 
@@ -67,9 +69,9 @@ Done! The when you run `the_post_thumbnail();` on the front end then it'll show 
 Right now, the only thing you can over-write is the instructions for the Featured Image.
 
 	$params['name'] = 'records';
-	$params['overwrite'] = array('featured_image_instruction' => 'The cover image of the record.');
+	$params['overwrite'] = array( 'featured_image_instruction' => 'The cover image of the record.' );
 
-	$records = new WPAbstractPostType($params);
+	$records = new WP_Abstract_Post_Type( $params );
 
 Soon we shall use the translation matrix to overwrite anything you see on screen!
 
@@ -77,7 +79,7 @@ Soon we shall use the translation matrix to overwrite anything you see on screen
 
 We've all seen the boring 'Enter title here' in WordPress thousands of times. Lets change it for our record post type.
 
-	$records = new WPAbstractPostType(array('name' => 'records', 'overwrite' => array('enter_post_here' => 'The title of the record'));
+	$records = new WP_Abstract_Post_Type( array( 'name' => 'records', 'overwrite' => array('enter_post_here' => 'The title of the record' ) );
 
 And we are away!
 
@@ -93,7 +95,7 @@ It uses good old transients to save the queue of messages (though this may chang
 
 Simple create an instance of WordPress Abstract Flash - done!
 
-	$flash = new WPAbstractFlash();
+	$flash = new WP_Abstract_Flash();
 
 We'll probably convert this to a singleton soon, but for the moment, lets use this. It need to be a global variable obviously.
 
@@ -101,26 +103,28 @@ We'll probably convert this to a singleton soon, but for the moment, lets use th
 
 A notice is something that can be used from, say, when a user saves a custom post type.
 
-    $flash->notice('Something happened - I am telling you about.');
+    $flash->notice( 'Something happened - I am telling you about.' );
 
 ### Create A Error Message
 
 A error message in red can be displayed using the following.
 
-	$flash->error('Something went badly wrong.');
+	$flash->error( 'Something went badly wrong.' );
 
 ### Create A Sticky Message
 
 Sticking messages come in two flavours, the same as normal errors, notice and error.
 
-    $flash->sticky_notice('Telling you to do something');
-    $flash->sticky_error('Something is badly wrong.');
+    $flash->sticky_notice( 'Telling you to do something' );
+    $flash->sticky_error( 'Something is badly wrong.' );
 
 You can clear the sticky notices in code.
 
-    $flash->clear_sticky_error('Text of the error to clear.');
-    $flash->clear_sticky_notice('Text of the notice to clear.');
-    $flash->clear_sticky_messages(); // Clear all sticky messages.
+    $flash->clear_sticky_error( 'Text of the error to clear.' );
+    $flash->clear_sticky_notice( 'Text of the notice to clear.' );
+    
+    // Clear all sticky messages.
+    $flash->clear_sticky_messages(); 
 
 ## Soon
 
