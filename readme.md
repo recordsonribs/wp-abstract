@@ -1,6 +1,6 @@
 # WordPress Abstract
 
-[![Build Status](http://api.travis-ci.org/recordsonribs/wp-abstract.png)](http://travis-ci.org/recordsonribs/wp-abstract)
+[![Build Status](https://api.travis-ci.org/recordsonribs/wp-abstract.png)](http://travis-ci.org/recordsonribs/wp-abstract)
 
 Creating custom post types and using other advanced features of WordPress can sometimes be a bit annoying, resulting in very repetitive code. 
 
