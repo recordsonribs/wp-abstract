@@ -1,5 +1,7 @@
 # WordPress Abstract
 
+[![Build Status](http://api.travis-ci.org/recordsonribs/wp-abstract.png)](http://travis-ci.org/recordsonribs/wp-abstract)
+
 Creating custom post types and using other advanced features of WordPress can sometimes be a bit annoying, resulting in very repetitive code. 
 
 WordPress Abstract, from [Records On Ribs](http://recordsonribs.com) hopes to make it a little easier from the perspective of the coder. We are using it to re-write our [Ribcage](http://github.com/recordsonrib/ribcage) plugin faster.
