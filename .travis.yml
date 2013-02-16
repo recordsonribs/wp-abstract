@@ -15,6 +15,7 @@ before_script:
     # Install WordPress tests
     - wget https://raw.github.com/tierra/wordpress-plugin-tests/setup/setup.sh
     - source setup.sh
+    - composer install
 script:
     - phpcs --standard=WordPress ./src
     - phpunit
