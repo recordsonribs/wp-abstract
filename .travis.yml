@@ -23,8 +23,13 @@ before_script:
     - tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
     - cd ..
     - mv $plugin_slug $plugin_dir
-    - wget -nv -O $plugin_dir/tests/wp-tests-config.php https://raw.github.com/benbalter/wordpress-plugin-tests/setup/wp-tests-config.php
+    - wget -nv -O $plugin_dir/tests/wp-tests-config.php http://unit-test.svn.wordpress.org/trunk/wp-tests-config-sample.php
     - cd $plugin_dir
+    - sed -i "s:dirname( __FILE__ ) . '/wordpress/':$WP_CORE_DIR:" tests/wp-tests-config.php
+    - sed -i "s/yourdbnamehere/wordpress_test/" tests/wp-tests-config.php
+    - sed -i "s/yourusernamehere/root/" tests/wp-tests-config.php
+    - sed -i "s/yourpasswordhere//" tests/wp-tests-config.php
+    - cat tests/wp-tests-config.php
     - mysql -e 'CREATE DATABASE wordpress_test;' -uroot
 script:
     - phpcs --standard=WordPress ./src
