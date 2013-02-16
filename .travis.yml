@@ -8,6 +8,8 @@ env:
     - WP_VERSION=master WP_MULTISITE=1
     - WP_VERSION=3.4.2 WP_MULTISITE=1
 before_script:
+    # Install dependencies from Composer
+    - composer install
     # Install CodeSniffer
     - pear install --alldeps PHP_CodeSniffer
     - phpenv rehash
@@ -15,8 +17,6 @@ before_script:
     # Install WordPress tests
     - wget https://raw.github.com/benbalter/wordpress-plugin-tests/setup/setup.sh
     - source setup.sh
-    # Install dependencies from Composer
-    - composer install
 script:
     - phpcs --standard=WordPress ./src
     - phpunit
