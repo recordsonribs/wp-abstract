@@ -13,8 +13,9 @@ before_script:
     - phpenv rehash
     - git clone git://github.com/mrchrisadams/WordPress-Coding-Standards.git $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress
     # Install WordPress tests
-    - wget https://raw.github.com/tierra/wordpress-plugin-tests/setup/setup.sh
+    - wget https://raw.github.com/benbalter/wordpress-plugin-tests/setup/setup.sh
     - source setup.sh
+    # Install dependencies from Composer
     - composer install
 script:
     - phpcs --standard=WordPress ./src
