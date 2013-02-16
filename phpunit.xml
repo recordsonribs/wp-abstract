@@ -1,12 +1,12 @@
 <phpunit
-	bootstrap="./bootstrap.php"
+	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 >
     <testsuites>
         <!-- Default test suite to run all tests -->
         <testsuite>
-            <directory prefix="test-" suffix=".php">./</directory>
+            <directory prefix="test-" suffix=".php">tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

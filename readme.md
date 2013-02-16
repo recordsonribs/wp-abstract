@@ -124,7 +124,11 @@ You can clear the sticky notices in code.
     $flash->clear_sticky_notice( 'Text of the notice to clear.' );
     
     // Clear all sticky messages.
-    $flash->clear_sticky_messages(); 
+    $flash->clear_sticky_messages();
+
+## Development
+
+This plugin has a comprehensive set of unit tests that leverages Benjamin J. Balter's [wordpress-plugin-tests](https://github.com/benbalter/wordpress-plugin-tests), a framework for unit testing for WordPress. This runs our tests over at [our Travis CI](https://travis-ci.org/recordsonribs/wp-abstract) on commits.
 
 ## Soon
 
