@@ -8,23 +8,23 @@ env:
     - WP_VERSION=master WP_MULTISITE=1
     - WP_VERSION=3.4.2 WP_MULTISITE=1
 before_script:
-    // Install CodeSniffer
+    # Install CodeSniffer
     - pear install --alldeps PHP_CodeSniffer
     - phpenv rehash
     - git clone git://github.com/mrchrisadams/WordPress-Coding-Standards.git $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress
-    // WordPress Tests
+    # WordPress Tests
     - export WP_CORE_DIR=/tmp/wordpress
     - export WP_TESTS_DIR=/tmp/wordpress-tests
-    // Setup Database
+    # Setup Database
     - mysql -e 'CREATE DATABASE wordpress_test;' -uroot
-    // Install WordPress
+    # Install WordPress
     - wget -nv -O /tmp/wordpress.tar.gz https://github.com/WordPress/WordPress/tarball/$WP_VERSION
     - mkdir -p $WP_CORE_DIR
     - tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
-    // Grab testing framework
+    # Grab testing framework
     - svn co --quiet --ignore-externals http://unit-tests.svn.wordpress.org/trunk/ $WP_TESTS_DIR
     - wget -nv -O $WP_TESTS_DIR/wp-tests-config.php https://raw.github.com/tierra/wordpress-plugin-tests/setup/wp-tests-config.php
-    // Place plugin into WordPress installation
+    # Place plugin into WordPress installation
     - plugin_slug=$(basename $(pwd))
     - plugin_dir=$WP_CORE_DIR/wp-content/plugins/$plugin_slug
     - cd ..
