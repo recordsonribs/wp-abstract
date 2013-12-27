@@ -1,5 +1,7 @@
 <?php
 
+require_once '../vendor/autoload.php';
+
 /**
  * Tests to test that that testing framework is testing tests. Meta, huh?
  *
@@ -15,6 +17,13 @@ class WP_Test_WordPress_Plugin_Tests extends WP_UnitTestCase {
 		$this->assertTrue( true );
 
 	 }
+	 
+	 /**
+	  * I bet this fails.
+	  */
+	  function test_for_failure() {
+	  	$cpt = \RecordsOnRibs\WordPressAbstract\CustomPostType();	
+	  }
 
 	/**
 	 * If these tests are being run on Travis CI, verify that the version of
