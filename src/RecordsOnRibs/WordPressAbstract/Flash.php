@@ -349,7 +349,7 @@ class Flash {
 			echo '<div id="message" class="updated fade">';
 		}
 
-		echo "<p>" . esc_html( $message ) . "</p>";
+		echo '<p>' . esc_html( $message ) . '</p>';
 
 		if ( $sticky ) {
 			echo '<p><a href="' . esc_url ( '?wpf_suppress_sticky=$id' ) . '">Don\'t show me this message again.</a></p>';
