@@ -2,6 +2,8 @@
 
 require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
 
+use \RecordsOnRibs\WordPressAbstract\CustomPostType as CustomPostType;
+
 /**
  * Tests to test that that testing framework is testing tests. Meta, huh?
  *
@@ -17,13 +19,6 @@ class WP_Test_WordPress_Plugin_Tests extends WP_UnitTestCase {
 		$this->assertTrue( true );
 
 	 }
-	 
-	 /**
-	  * I bet this fails.
-	  */
-	  function test_for_failure() {
-	  	$cpt = \RecordsOnRibs\WordPressAbstract\CustomPostType();	
-	  }
 
 	/**
 	 * If these tests are being run on Travis CI, verify that the version of
@@ -47,6 +42,13 @@ class WP_Test_WordPress_Plugin_Tests extends WP_UnitTestCase {
 
 		$this->assertEquals( get_bloginfo( 'version' ), $requested_version );
 
+	}
+
+	/**
+	 * This should now pass and we are test driven!
+	 */
+	function test_for_new_instance() {
+		$tests = new CustomPostType( 'test' ); 
 	}
 
 }
