@@ -57,7 +57,7 @@ class CustomPostType {
 		}
 
 		// Overwrite metabox title text!
-		if ( isset( $this->overwrite['meta_box_titles'] ) {
+		if ( isset( $this->overwrite['meta_box_titles'] ) ) {
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		}
 	}
