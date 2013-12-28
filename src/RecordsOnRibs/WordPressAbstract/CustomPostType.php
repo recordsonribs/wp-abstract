@@ -47,17 +47,17 @@ class CustomPostType {
 		add_action( 'init', array( $this, 'init' ) );
 
 		// Overwrite the 'Enter title here' for the post type
-		if ( $this->overwrite['title_prompt'] ) {
+		if ( isset( $this->overwrite['title_prompt'] ) ) {
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 		}
 
 		// Overwrite the little instruction underneith the Featured Image metabox
-		if ( $this->overwrite['featured_image_instruction'] ) {
+		if ( isset( $this->overwrite['featured_image_instruction'] ) ) {
 			add_filter( 'admin_post_thumbnail_html', array( $this, 'admin_post_thumbnail_html' ) );
 		}
 
 		// Overwrite metabox title text!
-		if ( $this->overwrite['meta_box_titles'] ) {
+		if ( isset( $this->overwrite['meta_box_titles'] ) {
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		}
 	}
