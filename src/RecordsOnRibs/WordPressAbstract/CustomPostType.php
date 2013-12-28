@@ -77,10 +77,10 @@ class CustomPostType {
 			'supports'             => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' ),
 			'register_meta_box_cb' => array( $this, 'metaboxes' ),
 			'rewrite'              => array(
-				                    	'slug'       => strtolower( $this->single ),
+				                    	'slug' => strtolower( $this->single ),
 				                    	'with_front' => false,
-				                    	'feeds'      => true,
-				                    	'pages'      => true,
+				                    	'feeds' => true,
+				                    	'pages' => true,
 			),
 			'can_export'           => true,
 			'show_in_nav_menus'    => true,
