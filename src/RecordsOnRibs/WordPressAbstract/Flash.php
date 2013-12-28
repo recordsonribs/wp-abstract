@@ -189,7 +189,7 @@ class Flash {
 	 * @since 1.0
 	 **/
 	function clear_sticky_message( $message ) {
-		 $found = false;
+		$found = false;
 
 		foreach ( $this->sticky_messages as $pos => $value ) {
 			if ( $value['message'] == $message ) {
@@ -203,7 +203,7 @@ class Flash {
 			$this->save_sticky_messages();
 
 		return $found;
-	 }
+	}
 
 	/**
 	  * Convenience wrapper function for clearing a sticky error.
@@ -352,7 +352,7 @@ class Flash {
 		echo "<p>" . esc_html( $message ) . "</p>";
 
 		if ( $sticky ) {
-		  echo '<p><a href="' . esc_url ( '?wpf_suppress_sticky=$id' ) . '">Don\'t show me this message again.</a></p>';
+			echo '<p><a href="' . esc_url ( '?wpf_suppress_sticky=$id' ) . '">Don\'t show me this message again.</a></p>';
 		}
 
 		echo '</div>';
