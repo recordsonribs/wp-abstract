@@ -115,10 +115,6 @@ class CustomPostType {
 		return $messages;
 	}
 
-	function metaboxes() {
-		return;
-	}
-
 	function create_labels() {
 		return array(
 			'name'               => $this->plural,
